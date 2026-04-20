@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beyond Dark Mode — 3 Theme System</title>
+
+    <style>
+        /* =========================
+   THEME TOKENS
+========================= */
+        :root {
+            --bg: #ffffff;
+            --text: #111111;
+            --card: #f5f5f5;
+            --border: #dddddd;
+            --accent: #0066ff;
+        }
+
+        /* 🌙 Dark */
+        [data-theme="dark"] {
+            --bg: #0e0e0e;
+            --text: #f5f5f5;
+            --card: #1e1e1e;
+            --border: #2a2a2a;
+            --accent: #4da3ff;
+        }
+
+        /* 🎨 Brand */
+        [data-theme="brand"] {
+            --bg: #1a0f2e;
+            --text: #f3e8ff;
+            --card: #2a1748;
+            --border: #3a2466;
+            --accent: #a855f7;
+        }
+
+        /* =========================
+   GLOBAL
+========================= */
+        body {
+            margin: 0;
+            font-family: system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: background .3s ease, color .3s ease;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 60px auto;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        /* =========================
+   CARD DEMO
+========================= */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .primary-btn {
+            background: var(--accent);
+            border: none;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* =========================
+   TOGGLE SWITCH
+========================= */
+        .theme-switcher {
+            position: relative;
+            display: inline-flex;
+            background: var(--card);
+            border-radius: 999px;
+            padding: 4px;
+            gap: 4px;
+            margin-top: 20px;
+        }
+
+        .theme-switcher button {
+            position: relative;
+            z-index: 2;
+            border: none;
+            background: transparent;
+            padding: 8px 14px;
+            border-radius: 999px;
+            cursor: pointer;
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        /* Slider highlight */
+        .theme-switcher .slider {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: calc(33.33% - 4px);
+            height: calc(100% - 8px);
+            border-radius: 999px;
+            background: var(--accent);
+            transition: transform 0.25s ease;
+        }
+
+
+        html[data-theme="light"] .theme-switcher button[data-theme="dark"],
+        html[data-theme="light"] .theme-switcher button[data-theme="brand"] {
+            color: black;
+        }
+
+        /* Slider positions */
+        .theme-switcher[data-active="dark"] .slider {
+            transform: translateX(100%);
+        }
+
+        .theme-switcher[data-active="brand"] .slider {
+            transform: translateX(200%);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Beyond Dark Mode 🌗🎨</h1>
+        <p>Light, Dark, and Brand themes using CSS variables and a modern toggle.</p>
+
+        <!-- THEME SWITCH -->
+        <div class="theme-switcher" data-active="light">
+            <button data-theme="light">☀️ Light</button>
+            <button data-theme="dark">🌙 Dark</button>
+            <button data-theme="brand">🎨 Brand</button>
+            <div class="slider"></div>
+        </div>
+
+        <!-- DEMO CARD -->
+        <div class="card">
+            <h2>Example Card</h2>
+            <p>This UI automatically adapts to the selected theme.</p>
+            <button class="primary-btn">Action Button</button>
+        </div>
+    </div>
+
+    <script>
+        const switcher = document.querySelector('.theme-switcher');
+        const buttons = document.querySelectorAll('.theme-switcher button');
+
+        /* Handle clicks */
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const theme = btn.dataset.theme;
+
+                document.documentElement.setAttribute('data-theme', theme);
+                switcher.setAttribute('data-active', theme);
+
+                localStorage.setItem('theme', theme);
+            });
+        });
+
+        /* Load saved theme or system preference */
+        const saved = localStorage.getItem('theme');
+
+        if (saved) {
+            document.documentElement.setAttribute('data-theme', saved);
+            switcher.setAttribute('data-active', saved);
+        } else {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const defaultTheme = prefersDark ? 'dark' : 'light';
+
+            document.documentElement.setAttribute('data-theme', defaultTheme);
+            switcher.setAttribute('data-active', defaultTheme);
+        }
+    </script>
+
+</body>
+
+</html>
