@@ -1,4 +1,4 @@
-Beyond Dark Mode: Building a 3-Theme System with CSS Variables and JavaScript
+Building a 3-Theme System with CSS Variables and JavaScript
 
 Dark mode has become standard across modern interfaces. But users today expect more than just light and dark — they expect choice and personalization.
 
